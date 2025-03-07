@@ -23,27 +23,12 @@ int	ft_len(char *str)
 		i++;
 	return (i);
 }
-
-void	init_map(t_list **list, char *av)
-{
-	int fd;
-	char *line;
-	t_list *new;
-
-	fd = open(av, O_RDONLY, 0777);
-	while ("new not null hhh" && fd != -1)
-	{
-		line = get_next_line(fd);
-		new = ft_lstnew(line);
-		if (!new->data)
-			break ;
-		ft_lstadd_back(list, new);
-	}
-}
 void	freelist(t_list **map)
 {
 	t_list *head;
 	head = (*map)->next;
+	free((*map)->data);
+	free(*map);
 	while (head)
 	{
 		*map = head;
@@ -52,6 +37,26 @@ void	freelist(t_list **map)
 		head = (*map)->next;
 	}
 }
+
+void	init_map(t_list **list, char *av)
+{
+	int fd;
+	char *line;
+	t_list *new;
+
+	fd = open(av, O_RDONLY, 0777);
+	while (fd != -1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		new = ft_lstnew(line);
+		if (!new)
+			return (freelist(list));
+		ft_lstadd_back(list, new);
+	}
+}
+
 void	f()
 {
 	system("leaks -q so_long");
@@ -59,15 +64,15 @@ void	f()
 
 int main(int ac, char *av[])
 {
-			atexit(f);
+	atexit(f);
 	if (ac == 2)
 	{
-	
 		t_list *head = NULL;
 		init_map(&head, av[1]);
 		if (!head)
 			return (1);
 		if (valid_map(head) == 1 || check_pos(head) == 1)
 			return (freelist(&head), 1);
+		freelist(&head);
 	}
 }
