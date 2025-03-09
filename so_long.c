@@ -26,15 +26,14 @@ int	ft_len(char *str)
 void	freelist(t_list **map)
 {
 	t_list *head;
-	head = (*map)->next;
-	free((*map)->data);
-	free(*map);
+	head = (*map);
+	
 	while (head)
 	{
-		*map = head;
+		head = head->next;
 		free((*map)->data);
 		free(*map);
-		head = (*map)->next;
+		*map = head;
 	}
 }
 
@@ -57,14 +56,14 @@ void	init_map(t_list **list, char *av)
 	}
 }
 
-void	f()
-{
-	system("leaks -q so_long");
-}
+// void	f()
+// {
+// 	system("leaks -q so_long");
+// }
 
 int main(int ac, char *av[])
 {
-	atexit(f);
+	// atexit(f);
 	if (ac == 2)
 	{
 		t_list *head = NULL;
@@ -73,6 +72,7 @@ int main(int ac, char *av[])
 			return (1);
 		if (valid_map(head) == 1 || check_pos(head) == 1)
 			return (freelist(&head), 1);
-		freelist(&head);
+		// freelist(&head);
+		init(head);
 	}
 }

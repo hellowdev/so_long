@@ -1,10 +1,14 @@
 #ifndef SO_LONG_H
 #define SO_LONG_H
 
+#include "MLX42/MLX42.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define WIDTH 64
+#define HEIGHT 64
 
 typedef struct s_list
 {
@@ -14,6 +18,30 @@ typedef struct s_list
 
 	struct	s_list *next;
 }	t_list;
+
+typedef struct s_txt
+{
+	mlx_texture_t	*wall;
+	mlx_texture_t	*coin;
+	mlx_texture_t	*player;
+	mlx_texture_t	*ground;
+	mlx_texture_t	*exit;
+}	my_text;
+
+typedef struct s_img
+{
+	mlx_image_t	*wall;
+	mlx_image_t	*coin;
+	mlx_image_t	*player;
+	mlx_image_t	*ground;
+	mlx_image_t	*exit;
+}	my_img;
+
+typedef struct pos
+{
+	int		x;
+	int		y;
+}	my_pos;
 
 t_list	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
@@ -40,4 +68,8 @@ int		check_pos(t_list *map);
 void	fill(char **tab, int x, int y);
 t_list 	flood_fill(char **tab, int x, int y);
 void	tacos(char **s);
+//////////////game 
+void    init(t_list *map);
+void	get_pos(t_list *map, char s);
+
 #endif
