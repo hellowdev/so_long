@@ -11,7 +11,7 @@ LIBS := -lglfw -L"/Users/ychedmi/.brew/opt/glfw/lib" $(LIBMLX)/build/libmlx42.a 
 SRCS	= so_long.c	./get_next_line/get_next_line.c		./get_next_line/get_next_line_utils.c \
 		./tools/ft_lstadd_back.c	./tools/ft_lstnew.c\
 		./tools/ft_lstlast.c 	./tools/ft_lstadd_front.c		./tools/ft_lstsize.c \
-		walls_checker.c	validmap.c	flood_fill.c 	./game/init_game.c\
+		walls_checker.c	validmap.c	flood_fill.c 	./game/init_game.c	hooks.c	 moves.c\
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -28,7 +28,6 @@ build:
 
 clean:
 	@rm -rf $(OBJS)
-	@rm -rf $(LIBMLX)/build
 
 fclean: clean
 	@rm -rf $(NAME)

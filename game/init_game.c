@@ -6,31 +6,25 @@ static void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-// void	get_pos(t_list *map, char s)
-// {
-// 	t_list *head;
-// 	int i;
-// 	int j;
-// 	my_pos position;
+void	disp_player(mlx_t* mlx, t_list *map, my_img img)
+{
+	int i;
+	int j;
 
-// 	j = 0;
-// 	head = map;
-// 	while (map)
-// 	{
-// 		i = 0;
-// 		while (head->data[i])
-// 		{
-// 			if (head->data[i] == s)
-// 			{
-// 				position.x = i;
-// 				position.y = j;
-// 				return ;
-// 			}
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
+	j = 0;
+	while (map)
+	{
+		i = 0;
+		while (map->data[i])
+		{
+			if (map->data[i] == 'P')
+				mlx_image_to_window(mlx, img.player, i * 64, j * 64);
+			i++;
+		}
+		j++;
+		map = map->next;
+	}
+}
 
 void	disp_window(mlx_t* mlx, t_list *map, my_img img)
 {
@@ -43,16 +37,12 @@ void	disp_window(mlx_t* mlx, t_list *map, my_img img)
 		i = 0;
 		while (map->data[i])
 		{
-			if (map->data[i] == '0')
-				mlx_image_to_window(mlx, img.ground, i	* 64, j	* 64);
-			else if (map->data[i] == '1')
+			 if (map->data[i] == '1')
 				mlx_image_to_window(mlx, img.wall, i * 64, j * 64);
 			else if (map->data[i] == 'C')
 				mlx_image_to_window(mlx, img.coin, i * 64, j * 64);
 			else if (map->data[i] == 'E')
 				mlx_image_to_window(mlx, img.exit, i * 64, j * 64);
-			else if (map->data[i] == 'P')
-				mlx_image_to_window(mlx, img.player, i * 64, j * 64);
 			i++;
 		}
 		j++;
@@ -60,57 +50,49 @@ void	disp_window(mlx_t* mlx, t_list *map, my_img img)
 	}
 }
 
-void	my_path(mlx_t *mlx, t_list *map)
+my_img	my_path(mlx_t *mlx)
 {
 	my_text texture;
 	my_img img;
 
-	texture.coin = mlx_load_png("./img/coin.png");
+	texture.coin = mlx_load_png("./textures/coin.png");
 	img.coin = mlx_texture_to_image(mlx, texture.coin);
 
-	texture.ground = mlx_load_png("./img/ground.png");
-	img.ground = mlx_texture_to_image(mlx, texture.ground);
-	
-	texture.exit = mlx_load_png("./img/exit.png");
+	texture.exit = mlx_load_png("./textures/exit.png");
 	img.exit = mlx_texture_to_image(mlx, texture.exit);
 
-	texture.wall = mlx_load_png("./img/wall.png");
+	texture.wall = mlx_load_png("./textures/wall.png");
 	img.wall = mlx_texture_to_image(mlx, texture.wall);
 
-	texture.player = mlx_load_png("./img/player.png");
+	texture.player = mlx_load_png("./textures/player.png");
 	img.player = mlx_texture_to_image(mlx, texture.player);
 	
-	disp_window(mlx, map, img);
+	mlx_delete_texture(texture.coin);
+	mlx_delete_texture(texture.exit);
+	mlx_delete_texture(texture.wall);
+	mlx_delete_texture(texture.player);
+	
+	return (img);
 }
-
-
-// check_render(mlx, head, '0');
-// check_render(mlx, head, 'C');
-// check_render(mlx, head, 'E');
-// check_render(mlx, head, 'P');
-// void	check_render(mlx_t* mlx, t_list *map, char s)
-// {
-// 	my_img img;
-// 	my_text texture;
-// 	my_pos position;
-
-// 	get_pos(map, s);
-// 	mlx_image_to_window(mlx, , position.x, position.y);
-// }
-
 
 void    init(t_list *map)
 {
     mlx_t* mlx;
-	// my_text texture;
-	// my_img img;
+	my_data smih;
 
-    mlx = mlx_init(WIDTH * ft_len(map->data), HEIGHT * ft_lstsize(map), "test game", false);
+    mlx = mlx_init(WIDTH * ft_len(map->data), HEIGHT * ft_lstsize(map), "so_long", false);
     if (!mlx)
 	    ft_error();
-	my_path(mlx, map);
-	
+	smih.img = my_path(mlx);
+   	smih.m = copy_map(map);
+	smih.mlx = mlx;
 
+	disp_window(mlx, map, smih.img);
+	disp_player(mlx, map, smih.img);
+
+	mlx_key_hook(mlx, &check_hooks, &smih);
 	mlx_loop(mlx);
-    // mlx_loop(mlx);
+	tacos(smih.m);
+	mlx_terminate(mlx);
+	
 }

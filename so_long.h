@@ -15,7 +15,6 @@ typedef struct s_list
     int		c;
 	int		e;
 	char	*data;
-
 	struct	s_list *next;
 }	t_list;
 
@@ -37,11 +36,16 @@ typedef struct s_img
 	mlx_image_t	*exit;
 }	my_img;
 
-typedef struct pos
+typedef struct hook_str
 {
-	int		x;
+	char	**m;
+	mlx_t	*mlx;
+	my_img	img;
 	int		y;
-}	my_pos;
+	int		x;
+	int		total;	
+}	my_data;
+
 
 t_list	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
@@ -70,6 +74,18 @@ t_list 	flood_fill(char **tab, int x, int y);
 void	tacos(char **s);
 //////////////game 
 void    init(t_list *map);
-void	get_pos(t_list *map, char s);
+
+void	disp_window(mlx_t* mlx, t_list *map, my_img);
+void	disp_player(mlx_t* mlx, t_list *map, my_img img);
+my_img	my_path(mlx_t *mlx);
+// MOVES --------->
+void 	check_hooks(mlx_key_data_t keydata, void *param);
+void	check_instances(my_data *str, int y, int x);
+void	move_up(my_data *str, int y, int x, mlx_key_data_t keydata);
+void	move_left(my_data *str, int y, int x, mlx_key_data_t keydata);
+void	move_right(my_data *str, int y, int x, mlx_key_data_t keydata);
+void	move_down(my_data *str, int y, int x, mlx_key_data_t keydata);
+void	calcule_moves(mlx_key_data_t keydata, my_data *str);
+void	ft_putnbr(int nb);
 
 #endif
