@@ -6,7 +6,7 @@
 /*   By: ychedmi <ychedmi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 15:25:43 by ychedmi           #+#    #+#             */
-/*   Updated: 2025/03/16 15:06:29 by ychedmi          ###   ########.fr       */
+/*   Updated: 2025/03/16 21:50:39 by ychedmi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int ac, char *av[])
 		if (!head)
 			return (write(2, "File not exist or empty\n", 25), 1);
 		if (ft_len(head->data) > 40 || ft_lstsize(head) > 22)
-			return (write(2, "Map Too Large\n", 15), 1);
+			return (freelist(&head), write(2, "Map Too Large\n", 15), 1);
 		lst = head;
 		if (valid_map(head) == 1 || check_pos(head, lst) == 1)
 			return (freelist(&head), 1);
