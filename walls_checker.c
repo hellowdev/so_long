@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ychedmi <ychedmi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 16:48:42 by ychedmi           #+#    #+#             */
+/*   Updated: 2025/03/15 16:50:42 by ychedmi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 int	lenmap(t_list *p)
 {
-	t_list *head;
-	
+	t_list	*head;
+
 	head = p;
 	while (head)
 	{
@@ -21,9 +33,9 @@ int	lenmap(t_list *p)
 
 int	first_wall(t_list *map)
 {
-	int i;
+	int	i;
+
 	i = 0;
-	
 	while (map->data[i] == '1')
 	{
 		if (map->data[i + 1] == '\n')
@@ -32,11 +44,12 @@ int	first_wall(t_list *map)
 	}
 	return (1);
 }
+
 int	last_wall(t_list *map)
 {
-	int i;
-	i = 0;
+	int	i;
 
+	i = 0;
 	map = ft_lstlast(map);
 	while (map->data[i] && map->data[i] == '1')
 	{
@@ -49,11 +62,12 @@ int	last_wall(t_list *map)
 
 int	else_walls(t_list *map)
 {
-	int i;
-	i = 0;
-	int j = 0;
-	map = map->next;
+	int	i;
+	int	j;
 
+	j = 0;
+	i = 0;
+	map = map->next;
 	while (map && map->next)
 	{
 		if (map->data[0] == '1')
@@ -63,7 +77,7 @@ int	else_walls(t_list *map)
 			{
 				if (map->data[i] != '1' && map->data[i + 1] == '\n')
 					return (1);
-			i++;
+				i++;
 			}
 		}
 		else
@@ -71,7 +85,6 @@ int	else_walls(t_list *map)
 		j++;
 		map = map->next;
 	}
-	
 	return (0);
 }
 
